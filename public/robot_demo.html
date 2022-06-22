@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My robot</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        #robo {
+            width:auto;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<img src="robot.png" id="robo">
+
+<script>
+    var socket = io();
+    robo = document.getElementById("robo");
+    var postop = 200;
+    var posleft = 200;
+    robo.style.position= 'absolute';
+    robo.style.left='200px';
+    robo.style.top='200px' ;
+
+    socket.on('connect', ()=>{
+        socket.emit('robo',socket.id);
+    })
+
+    socket.on('move', (msg) => {
+        console.log(msg);
+        switch (msg) {
+        case 'bt_up':
+        postop -= 10
+        robo.style.top =postop+"px";
+        break;
+        case 'bt_down':
+        postop += 10
+        robo.style.top =postop+"px";
+        break;
+        case 'bt_left':
+        posleft -= 10
+        robo.style.left =posleft+"px";
+        break;
+        case 'bt_right':
+        posleft += 10
+        robo.style.left =posleft+"px";
+        break;
+        }
+        console.log(postop,posleft)
+    });
+</script>
+</body>
+</html>

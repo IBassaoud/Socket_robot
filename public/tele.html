@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My tele</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td></td>
+            <td><button id="bt_up">&#8593</button> </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><button id="bt_left">&#8592</button></td>
+            <td></td>
+            <td><button id="bt_right">&#8594</button></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button id="bt_down">&#8595</button> </td>
+            <td></td>
+        </tr>
+    </table>
+    <div id="erreur"></div>
+    <script>    
+        var socket = io();
+        socket.on('connect', ()=>{
+            socket.emit('tele', socket.id);
+        })
+
+        let mybutts = document.getElementsByTagName("button");
+        for (const butt of mybutts) {
+            butt.addEventListener("click", function() {
+                erreur.innerText = ""
+                socket.emit('command', this.id)
+            })
+        }
+
+        socket.on('norobo', ()=> {
+            erreur.innerText = "erreur : pas de robot"
+        })
+    </script>
+</body>
+</html>
